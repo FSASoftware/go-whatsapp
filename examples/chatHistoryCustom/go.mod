@@ -1,4 +1,4 @@
-module github.com/FSASoftware/go-whatsapp/examples/login
+module github.com/FSASoftware/go-whatsapp/examples/chatHistoryCustom
 
 go 1.14
 

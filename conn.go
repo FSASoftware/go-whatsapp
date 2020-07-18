@@ -120,7 +120,7 @@ func NewConn(timeout time.Duration) (*Conn, error) {
 		msgTimeout: timeout,
 		Store:      newStore(),
 
-		longClientName:  "github.com/rhymen/go-whatsapp",
+		longClientName:  "github.com/FSASoftware/go-whatsapp",
 		shortClientName: "go-whatsapp",
 		clientVersion:   "0.1.0",
 	}
@@ -135,7 +135,7 @@ func NewConnWithProxy(timeout time.Duration, proxy func(*http.Request) (*url.URL
 		msgTimeout: timeout,
 		Store:      newStore(),
 
-		longClientName:  "github.com/rhymen/go-whatsapp",
+		longClientName:  "github.com/FSASoftware/go-whatsapp",
 		shortClientName: "go-whatsapp",
 		clientVersion:   "0.1.0",
 		Proxy:           proxy,
@@ -156,8 +156,8 @@ func (wac *Conn) connect() (err error) {
 	}()
 
 	dialer := &websocket.Dialer{
-		ReadBufferSize:   25 * 1024 * 1024,
-		WriteBufferSize:  10 * 1024 * 1024,
+		ReadBufferSize:   0,
+		WriteBufferSize:  0,
 		HandshakeTimeout: wac.msgTimeout,
 		Proxy:            wac.Proxy,
 	}

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/FSASoftware/go-whatsapp"
 	"log"
 	"time"
+
+	"github.com/FSASoftware/go-whatsapp"
 )
 
 // historyHandler for acquiring chat history
@@ -40,6 +41,34 @@ func (h *historyHandler) HandleTextMessage(message whatsapp.TextMessage) {
 	h.messages = append(h.messages, fmt.Sprintf("%s	%s (%s): %s", date,
 		authorID, screenName, message.Text))
 
+}
+
+func (h *historyHandler) HandleImageMessage(message whatsapp.ImageMessage) {
+	fmt.Println(message)
+}
+
+func (h *historyHandler) HandleDocumentMessage(message whatsapp.DocumentMessage) {
+	fmt.Println(message)
+}
+
+func (h *historyHandler) HandleVideoMessage(message whatsapp.VideoMessage) {
+	fmt.Println(message)
+}
+
+func (h *historyHandler) HandleAudioMessage(message whatsapp.AudioMessage) {
+	fmt.Println(message)
+}
+
+func (h *historyHandler) HandleContactMessage(message whatsapp.ContactMessage) {
+	fmt.Println(message)
+}
+
+func (h *historyHandler) HandleLocationMessage(message whatsapp.LocationMessage) {
+	fmt.Println(message)
+}
+
+func (h *historyHandler) HandleStickerMessage(message whatsapp.StickerMessage) {
+	fmt.Println(message)
 }
 
 func (h *historyHandler) HandleError(err error) {

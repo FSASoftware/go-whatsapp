@@ -38,12 +38,13 @@ func main() {
 	// }
 
 	//for i:= 1; i <= 5; i++ {
-	msg := whatsapp.TextMessage{
+	msg := whatsapp.ContactMessage{
 		Info: whatsapp.MessageInfo{
 			RemoteJid: "5511952187414-1584371060@g.us",
 		},
 		// ContextInfo: ContextInfo,
-		Text: "Message sent by github.com/FSASoftware/go-whatsapp",
+		DisplayName: "Bia Bradesco",
+		Vcard:       "BEGIN:VCARD\nVERSION:3.0\nN:Bradesco;Bia;\nFN:Bia Bradesco\nitem1.TEL;waid=551133350237:1\nitem1.X-ABLabel:Celular\nEND:VCARD",
 	}
 
 	msgId, err := wac.Send(msg)

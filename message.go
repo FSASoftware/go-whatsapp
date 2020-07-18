@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Rhymen/go-whatsapp/binary"
-	"github.com/Rhymen/go-whatsapp/binary/proto"
+	"github.com/FSASoftware/go-whatsapp/binary"
+	"github.com/FSASoftware/go-whatsapp/binary/proto"
 )
 
 type MediaType string
@@ -65,6 +65,13 @@ func (wac *Conn) Send(msg interface{}) (string, error) {
 		msgProto = GetLiveLocationProto(m)
 	case ContactMessage:
 		msgProto = getContactMessageProto(m)
+	case StickerMessage:
+		var err error
+		m.url, m.mediaKey, m.fileEncSha256, m.fileSha256, m.fileLength, err = wac.Upload(m.Content, MediaImage)
+		if err != nil {
+			return "ERROR", fmt.Errorf("sticker upload failed: %v", err)
+		}
+		msgProto = getStickerProto(m)
 	default:
 		return "ERROR", fmt.Errorf("cannot match type %T, use message types declared in the package", msg)
 	}
@@ -651,6 +658,24 @@ func getStickerMessage(msg *proto.WebMessageInfo) StickerMessage {
 	}
 
 	return stickerMessage
+}
+
+func getStickerProto(msg StickerMessage) *proto.WebMessageInfo {
+	p := getInfoProto(&msg.Info)
+	contextInfo := getContextInfoProto(&msg.ContextInfo)
+
+	p.Message = &proto.Message{
+		StickerMessage: &proto.StickerMessage{
+			Url:           &msg.url,
+			MediaKey:      msg.mediaKey,
+			Mimetype:      &msg.Type,
+			FileEncSha256: msg.fileEncSha256,
+			FileSha256:    msg.fileSha256,
+			FileLength:    &msg.fileLength,
+			ContextInfo:   contextInfo,
+		},
+	}
+	return p
 }
 
 /*

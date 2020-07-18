@@ -14,8 +14,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/Rhymen/go-whatsapp/crypto/cbc"
-	"github.com/Rhymen/go-whatsapp/crypto/hkdf"
+	"github.com/FSASoftware/go-whatsapp/crypto/cbc"
+	"github.com/FSASoftware/go-whatsapp/crypto/hkdf"
 )
 
 func Download(url string, mediaKey []byte, appInfo MediaType, fileLength int) ([]byte, error) {
@@ -93,17 +93,20 @@ func downloadMedia(url string) (file []byte, mac []byte, err error) {
 	return data[:n-10], data[n-10 : n], nil
 }
 
-type MediaConn struct {
-	Status    int `json:"status"`
-	MediaConn struct {
-		Auth  string `json:"auth"`
-		TTL   int    `json:"ttl"`
-		Hosts []struct {
-			Hostname string   `json:"hostname"`
-			IPs      []string `json:"ips"`
-		} `json:"hosts"`
-	} `json:"media_conn"`
+                                                                                
+type MediaConn struct {                                                         
+        Status int `json:"status"`                                              
+        MediaConn struct {                                                      
+                Auth string `json:"auth"`                                       
+                TTL int `json:"ttl"`                                            
+                Hosts []struct {                                                
+                        Hostname string `json:"hostname"`                       
+                        IPs []interface{}  `json:"ips"`                                              
+                } `json:"hosts"`                                                
+        } `json:"media_conn"`                                                   
 }
+
+
 
 func (wac *Conn) queryMediaConn() (hostname, auth string, ttl int, err error) {
 	queryReq := []interface{}{"query", "mediaConn"}
