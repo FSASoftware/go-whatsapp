@@ -8,7 +8,7 @@ import (
 	"time"
 
 	qrcodeTerminal "github.com/Baozisoftware/qrcode-terminal-go"
-	"github.com/FSASoftware/go-whatsapp"
+	"github.com/Rhymen/go-whatsapp"
 )
 
 func main() {

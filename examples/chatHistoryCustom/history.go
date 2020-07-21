@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/FSASoftware/go-whatsapp"
+	"github.com/Rhymen/go-whatsapp"
 )
 
 // historyHandler for acquiring chat history

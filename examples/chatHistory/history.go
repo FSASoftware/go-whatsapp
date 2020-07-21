@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/FSASoftware/go-whatsapp"
+	"github.com/Rhymen/go-whatsapp"
 	"log"
 	"time"
 )

@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/gob"
 	"fmt"
-	"github.com/Baozisoftware/qrcode-terminal-go"
-	"github.com/FSASoftware/go-whatsapp"
 	"os"
 	"time"
+
+	qrcodeTerminal "github.com/Baozisoftware/qrcode-terminal-go"
+	"github.com/Rhymen/go-whatsapp"
 )
 
 func main() {
@@ -33,19 +34,19 @@ func main() {
 
 	msg := whatsapp.ImageMessage{
 		Info: whatsapp.MessageInfo{
-			RemoteJid: "number@s.whatsapp.net",
+			RemoteJid: "5511952187414@s.whatsapp.net",
 		},
 		Type:    "image/jpeg",
 		Caption: "Hello Gopher!",
 		Content: img,
 	}
 
-	msgId,err := wac.Send(msg)
+	msgId, err := wac.Send(msg)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error sending message: %v", err)
-		os.Exit(1)		
+		os.Exit(1)
 	} else {
-		fmt.Println("Message Sent -> ID : "+msgId)
+		fmt.Println("Message Sent -> ID : " + msgId)
 	}
 }
 

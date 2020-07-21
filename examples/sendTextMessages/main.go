@@ -7,7 +7,7 @@ import (
 	"time"
 
 	qrcodeTerminal "github.com/Baozisoftware/qrcode-terminal-go"
-	"github.com/FSASoftware/go-whatsapp"
+	"github.com/Rhymen/go-whatsapp"
 )
 
 func main() {
@@ -43,7 +43,7 @@ func main() {
 			RemoteJid: "5511952187414-1584371060@g.us",
 		},
 		// ContextInfo: ContextInfo,
-		Text: "Message sent by github.com/FSASoftware/go-whatsapp",
+		Text: "Message sent by github.com/Rhymen/go-whatsapp",
 	}
 
 	msgId, err := wac.Send(msg)
