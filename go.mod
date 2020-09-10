@@ -12,6 +12,6 @@ require (
 	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 )
 
-replace github.com/Rhymen/go-whatsapp => github.com/FSASoftware/go-whatsapp v0.1.1-0.20200721045157-c464195468e8
+replace github.com/Rhymen/go-whatsapp => ../../
 
 go 1.13
