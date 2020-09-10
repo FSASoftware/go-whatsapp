@@ -37,13 +37,13 @@ func main() {
 	// 	Participant:     "", //Whot sent the original message
 	// }
 
-	//for i:= 1; i <= 5; i++ {
+	// for i := 1; i <= 5; i++ {]
 	msg := whatsapp.TextMessage{
 		Info: whatsapp.MessageInfo{
-			RemoteJid: "5511952187414-1584371060@g.us",
+			RemoteJid: "551133350237@s.whatsapp.net",
 		},
 		// ContextInfo: ContextInfo,
-		Text: "Message sent by github.com/Rhymen/go-whatsapp",
+		Text: "Extrato",
 	}
 
 	msgId, err := wac.Send(msg)
@@ -53,30 +53,31 @@ func main() {
 	} else {
 		fmt.Println("Message Sent -> ID : " + msgId)
 	}
-	//}
 }
+
+// }
 
 func login(wac *whatsapp.Conn) error {
 	//load saved session
 	session, err := readSession()
-	if err == nil {
-		//restore session
-		session, err = wac.RestoreWithSession(session)
-		if err != nil {
-			return fmt.Errorf("restoring failed: %v\n", err)
-		}
-	} else {
-		//no saved session -> regular login
-		qr := make(chan string)
-		go func() {
-			terminal := qrcodeTerminal.New()
-			terminal.Get(<-qr).Print()
-		}()
-		session, err = wac.Login(qr)
-		if err != nil {
-			return fmt.Errorf("error during login: %v\n", err)
-		}
+	// if err == nil {
+	// 	//restore session
+	// 	session, err = wac.RestoreWithSession(session)
+	// 	if err != nil {
+	// 		return fmt.Errorf("restoring failed: %v\n", err)
+	// 	}
+	// } else {
+	//no saved session -> regular login
+	qr := make(chan string)
+	go func() {
+		terminal := qrcodeTerminal.New()
+		terminal.Get(<-qr).Print()
+	}()
+	session, err = wac.Login(qr)
+	if err != nil {
+		return fmt.Errorf("error during login: %v\n", err)
 	}
+	// }
 
 	/*	//no saved session -> regular login
 		qr := make(chan string)

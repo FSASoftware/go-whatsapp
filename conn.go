@@ -82,7 +82,7 @@ type Conn struct {
 	session        *Session
 	sessionLock    uint32
 	handler        []Handler
-	msgCount       int
+	MsgCount       int
 	msgTimeout     time.Duration
 	Info           *Info
 	Store          *Store
@@ -116,7 +116,7 @@ The goroutine for handling incoming messages is started
 func NewConn(timeout time.Duration) (*Conn, error) {
 	wac := &Conn{
 		handler:    make([]Handler, 0),
-		msgCount:   0,
+		MsgCount:   0,
 		msgTimeout: timeout,
 		Store:      newStore(),
 
@@ -131,7 +131,7 @@ func NewConn(timeout time.Duration) (*Conn, error) {
 func NewConnWithProxy(timeout time.Duration, proxy func(*http.Request) (*url.URL, error)) (*Conn, error) {
 	wac := &Conn{
 		handler:    make([]Handler, 0),
-		msgCount:   0,
+		MsgCount:   0,
 		msgTimeout: timeout,
 		Store:      newStore(),
 

@@ -105,7 +105,7 @@ func (wac *Conn) sendProto(p *proto.WebMessageInfo) (<-chan string, error) {
 		Description: "action",
 		Attributes: map[string]string{
 			"type":  "relay",
-			"epoch": strconv.Itoa(wac.msgCount),
+			"epoch": strconv.Itoa(wac.MsgCount),
 		},
 		Content: []interface{}{p},
 	}
