@@ -72,9 +72,10 @@ func (h *waHandler) HandleImageMessage(message whatsapp.ImageMessage) {
 func readInput(input chan<- string) {
 	for {
 		var u string
-		_, err := fmt.Scanf("%v\n", &u)
+		_, err := fmt.Scanln(&u)
+		fmt.Println(u)
 		if err != nil {
-			panic(err)
+			fmt.Printf("Error on reading prompt: %v", err)
 		}
 		input <- u
 	}
@@ -114,6 +115,19 @@ func closeFunction(wac *whatsapp.Conn) {
 }
 
 func main() {
+	// proxy := http.ProxyURL(&url.URL{
+	// 	Scheme: "http", // or http/https depending on your proxy
+	// 	Host:   "127.0.0.1:8080",
+	// 	Path:   "/",
+	// })
+
+	// //create new WhatsApp connection
+	// wac, err := whatsapp.NewConnWithProxy(10*time.Second, proxy)
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "error creating connection: %v\n", err)
+	// 	return
+	// }
+
 	//create new WhatsApp connection
 	wac, err := whatsapp.NewConn(10 * time.Second)
 	if err != nil {
@@ -152,10 +166,11 @@ func main() {
 			fmt.Println()
 			fmt.Println(rcvMessage)
 		case textMessage := <-inChan:
+			textMessage = strings.Replace(textMessage, "\r\n", "", -1)
 			jidNMessage := strings.Split(textMessage, ",")
 			err := sendMessage(jidNMessage[0], jidNMessage[1], wac)
 			if err != nil {
-				fmt.Printf("%v", err)
+				fmt.Printf("%v\n", err)
 			}
 		case <-c:
 			return
