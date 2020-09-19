@@ -11,6 +11,19 @@ import (
 )
 
 func main() {
+	// proxy := http.ProxyURL(&url.URL{
+	// 	Scheme: "http", // or http/https depending on your proxy
+	// 	Host:   "127.0.0.1:8080",
+	// 	Path:   "/",
+	// })
+
+	// //create new WhatsApp connection
+	// wac, err := whatsapp.NewConnWithProxy(10*time.Second, proxy)
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "error creating connection: %v\n", err)
+	// 	return
+	// }
+
 	//create new WhatsApp connection
 	wac, err := whatsapp.NewConn(5 * time.Second)
 	if err != nil {
@@ -60,24 +73,24 @@ func main() {
 func login(wac *whatsapp.Conn) error {
 	//load saved session
 	session, err := readSession()
-	// if err == nil {
-	// 	//restore session
-	// 	session, err = wac.RestoreWithSession(session)
-	// 	if err != nil {
-	// 		return fmt.Errorf("restoring failed: %v\n", err)
-	// 	}
-	// } else {
-	//no saved session -> regular login
-	qr := make(chan string)
-	go func() {
-		terminal := qrcodeTerminal.New()
-		terminal.Get(<-qr).Print()
-	}()
-	session, err = wac.Login(qr)
-	if err != nil {
-		return fmt.Errorf("error during login: %v\n", err)
+	if err == nil {
+		//restore session
+		session, err = wac.RestoreWithSession(session)
+		if err != nil {
+			return fmt.Errorf("restoring failed: %v\n", err)
+		}
+	} else {
+		// no saved session -> regular login
+		qr := make(chan string)
+		go func() {
+			terminal := qrcodeTerminal.New()
+			terminal.Get(<-qr).Print()
+		}()
+		session, err = wac.Login(qr)
+		if err != nil {
+			return fmt.Errorf("error during login: %v\n", err)
+		}
 	}
-	// }
 
 	/*	//no saved session -> regular login
 		qr := make(chan string)
