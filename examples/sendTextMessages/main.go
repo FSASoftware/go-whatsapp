@@ -8,6 +8,7 @@ import (
 
 	qrcodeTerminal "github.com/Baozisoftware/qrcode-terminal-go"
 	"github.com/Rhymen/go-whatsapp"
+	"github.com/Rhymen/go-whatsapp/binary/proto"
 )
 
 func main() {
@@ -26,10 +27,10 @@ func main() {
 
 	<-time.After(3 * time.Second)
 
-	// previousMessage := "😘"
-	// quotedMessage := proto.Message{
-	// 	Conversation: &previousMessage,
-	// }
+	previousMessage := "😘"
+	quotedMessage := proto.Message{
+		Conversation: &previousMessage,
+	}
 
 	ContextInfo := whatsapp.ContextInfo{
 		QuotedMessage:   &quotedMessage,
@@ -40,10 +41,10 @@ func main() {
 	//for i:= 1; i <= 5; i++ {
 	msg := whatsapp.TextMessage{
 		Info: whatsapp.MessageInfo{
-			RemoteJid: "5511952187414-1584371060@g.us",
+			RemoteJid: "5511952187414@s.whatsapp.net",
 		},
-		// ContextInfo: ContextInfo,
-		Text: "Message sent by github.com/Rhymen/go-whatsapp",
+		ContextInfo: ContextInfo,
+		Text:        "Message sent by github.com/Rhymen/go-whatsapp",
 	}
 
 	msgId, err := wac.Send(msg)
