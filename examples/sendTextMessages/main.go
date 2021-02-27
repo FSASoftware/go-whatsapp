@@ -31,11 +31,11 @@ func main() {
 	// 	Conversation: &previousMessage,
 	// }
 
-	// ContextInfo := whatsapp.ContextInfo{
-	// 	QuotedMessage:   &quotedMessage,
-	// 	QuotedMessageID: "",
-	// 	Participant:     "", //Whot sent the original message
-	// }
+	ContextInfo := whatsapp.ContextInfo{
+		QuotedMessage:   &quotedMessage,
+		QuotedMessageID: "",
+		Participant:     "", //Who sent the original message
+	}
 
 	//for i:= 1; i <= 5; i++ {
 	msg := whatsapp.TextMessage{
