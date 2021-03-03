@@ -57,7 +57,7 @@ func (wac *Conn) LoadMediaInfo(jid, messageId, owner string) (*binary.Node, erro
 
 func (wac *Conn) Presence(jid string, presence Presence) (<-chan string, error) {
 	ts := time.Now().Unix()
-	tag := fmt.Sprintf("%d.--%d", ts, wac.msgCount)
+	tag := fmt.Sprintf("%d.--%d", ts, wac.MsgCount)
 
 	content := binary.Node{
 		Description: "presence",
@@ -78,7 +78,7 @@ func (wac *Conn) Presence(jid string, presence Presence) (<-chan string, error) 
 		Description: "action",
 		Attributes: map[string]string{
 			"type":  "set",
-			"epoch": strconv.Itoa(wac.msgCount),
+			"epoch": strconv.Itoa(wac.MsgCount),
 		},
 		Content: []interface{}{content},
 	}
@@ -105,13 +105,13 @@ func (wac *Conn) Chats() (*binary.Node, error) {
 
 func (wac *Conn) Read(jid, id string) (<-chan string, error) {
 	ts := time.Now().Unix()
-	tag := fmt.Sprintf("%d.--%d", ts, wac.msgCount)
+	tag := fmt.Sprintf("%d.--%d", ts, wac.MsgCount)
 
 	n := binary.Node{
 		Description: "action",
 		Attributes: map[string]string{
 			"type":  "set",
-			"epoch": strconv.Itoa(wac.msgCount),
+			"epoch": strconv.Itoa(wac.MsgCount),
 		},
 		Content: []interface{}{binary.Node{
 			Description: "read",
@@ -129,13 +129,13 @@ func (wac *Conn) Read(jid, id string) (<-chan string, error) {
 
 func (wac *Conn) query(t, jid, messageId, kind, owner, search string, count, page int) (*binary.Node, error) {
 	ts := time.Now().Unix()
-	tag := fmt.Sprintf("%d.--%d", ts, wac.msgCount)
+	tag := fmt.Sprintf("%d.--%d", ts, wac.MsgCount)
 
 	n := binary.Node{
 		Description: "query",
 		Attributes: map[string]string{
 			"type":  t,
-			"epoch": strconv.Itoa(wac.msgCount),
+			"epoch": strconv.Itoa(wac.MsgCount),
 		},
 	}
 
@@ -188,7 +188,7 @@ func (wac *Conn) query(t, jid, messageId, kind, owner, search string, count, pag
 
 func (wac *Conn) setGroup(t, jid, subject string, participants []string) (<-chan string, error) {
 	ts := time.Now().Unix()
-	tag := fmt.Sprintf("%d.--%d", ts, wac.msgCount)
+	tag := fmt.Sprintf("%d.--%d", ts, wac.MsgCount)
 
 	//TODO: get proto or improve encoder to handle []interface{}
 
@@ -216,7 +216,7 @@ func (wac *Conn) setGroup(t, jid, subject string, participants []string) (<-chan
 		Description: "action",
 		Attributes: map[string]string{
 			"type":  "set",
-			"epoch": strconv.Itoa(wac.msgCount),
+			"epoch": strconv.Itoa(wac.MsgCount),
 		},
 		Content: []interface{}{g},
 	}

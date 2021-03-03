@@ -11,6 +11,19 @@ import (
 )
 
 func main() {
+	// proxy := http.ProxyURL(&url.URL{
+	// 	Scheme: "http", // or http/https depending on your proxy
+	// 	Host:   "127.0.0.1:8080",
+	// 	Path:   "/",
+	// })
+
+	// //create new WhatsApp connection
+	// wac, err := whatsapp.NewConnWithProxy(10*time.Second, proxy)
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "error creating connection: %v\n", err)
+	// 	return
+	// }
+
 	//create new WhatsApp connection
 	wac, err := whatsapp.NewConn(5 * time.Second)
 	if err != nil {
@@ -37,13 +50,13 @@ func main() {
 	// 	Participant:     "", //Whot sent the original message
 	// }
 
-	//for i:= 1; i <= 5; i++ {
+	// for i := 1; i <= 5; i++ {]
 	msg := whatsapp.TextMessage{
 		Info: whatsapp.MessageInfo{
-			RemoteJid: "5511952187414-1584371060@g.us",
+			RemoteJid: "551133350237@s.whatsapp.net",
 		},
 		// ContextInfo: ContextInfo,
-		Text: "Message sent by github.com/Rhymen/go-whatsapp",
+		Text: "Extrato",
 	}
 
 	msgId, err := wac.Send(msg)
@@ -53,8 +66,9 @@ func main() {
 	} else {
 		fmt.Println("Message Sent -> ID : " + msgId)
 	}
-	//}
 }
+
+// }
 
 func login(wac *whatsapp.Conn) error {
 	//load saved session
@@ -66,7 +80,7 @@ func login(wac *whatsapp.Conn) error {
 			return fmt.Errorf("restoring failed: %v\n", err)
 		}
 	} else {
-		//no saved session -> regular login
+		// no saved session -> regular login
 		qr := make(chan string)
 		go func() {
 			terminal := qrcodeTerminal.New()

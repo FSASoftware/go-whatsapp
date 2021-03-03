@@ -27,15 +27,16 @@ func (wac *Conn) writeJson(data []interface{}) (<-chan string, error) {
 	}
 
 	ts := time.Now().Unix()
-	messageTag := fmt.Sprintf("%d.--%d", ts, wac.msgCount)
+	messageTag := fmt.Sprintf("%d.--%d", ts, wac.MsgCount)
 	bytes := []byte(fmt.Sprintf("%s,%s", messageTag, d))
+	fmt.Printf("epoch: %d message: %v\n", wac.MsgCount, data)
 
 	ch, err := wac.write(websocket.TextMessage, messageTag, bytes)
 	if err != nil {
 		return nil, err
 	}
 
-	wac.msgCount++
+	wac.MsgCount++
 	return ch, nil
 }
 
@@ -61,7 +62,7 @@ func (wac *Conn) writeBinary(node binary.Node, metric metric, flag flag, message
 		return nil, errors.Wrap(err, "failed to write message")
 	}
 
-	wac.msgCount++
+	wac.MsgCount++
 	return ch, nil
 }
 
