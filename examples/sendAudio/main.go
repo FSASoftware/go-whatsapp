@@ -26,7 +26,22 @@ func main() {
 
 	<-time.After(3 * time.Second)
 
-	audio, err := os.Open("teste2.ogg")
+	// audio, err := os.Open("teste2.ogg")
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "error reading file: %v\n", err)
+	// 	os.Exit(1)
+	// }
+
+	// msg := whatsapp.AudioMessage{
+	// 	Info: whatsapp.MessageInfo{
+	// 		RemoteJid: "5511948000921@s.whatsapp.net",
+	// 	},
+	// 	Type:    "audio/ogg; codecs=opus",
+	// 	Content: audio,
+	// 	Ptt:     false,
+	// }
+
+	audio, err := os.Open("test_aac.aac")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error reading file: %v\n", err)
 		os.Exit(1)
@@ -36,9 +51,9 @@ func main() {
 		Info: whatsapp.MessageInfo{
 			RemoteJid: "5511948000921@s.whatsapp.net",
 		},
-		Type:    "audio/ogg; codecs=opus",
+		Type:    "audio/aac",
 		Content: audio,
-		Ptt:     false,
+		Ptt:     true,
 	}
 
 	msgId, err := wac.Send(msg)
