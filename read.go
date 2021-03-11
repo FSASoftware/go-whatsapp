@@ -57,6 +57,10 @@ func (wac *Conn) readPump() {
 func (wac *Conn) processReadData(msgType int, msg []byte) error {
 	data := strings.SplitN(string(msg), ",", 2)
 
+	if msgType != websocket.BinaryMessage {
+		fmt.Println(data)
+	}
+
 	if data[0][0] == '!' { //Keep-Alive Timestamp
 		data = append(data, data[0][1:]) //data[1]
 		data[0] = "!"
