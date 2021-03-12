@@ -43,33 +43,188 @@ func (h *historyHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
 }
 
-func (h *historyHandler) HandleImageMessage(message whatsapp.ImageMessage) {
-	fmt.Println(message)
-}
+// func (h *historyHandler) HandleImageMessage(message whatsapp.ImageMessage) {
+// 	data, err := message.Download()
+// 	if err != nil {
+// 		if err != whatsapp.ErrMediaDownloadFailedWith410 && err != whatsapp.ErrMediaDownloadFailedWith404 {
+// 			return
+// 		}
+// 		if _, err = h.c.LoadMediaInfo(message.Info.RemoteJid, message.Info.Id, strconv.FormatBool(message.Info.FromMe)); err == nil {
+// 			data, err = message.Download()
+// 			if err != nil {
+// 				return
+// 			}
+// 		}
+// 	}
 
-func (h *historyHandler) HandleDocumentMessage(message whatsapp.DocumentMessage) {
-	fmt.Println(message)
-}
+// 	filename := fmt.Sprintf("%v/%v.%v", os.TempDir(), message.Info.Id, strings.Split(message.Type, "/")[1])
+// 	file, err := os.Create(filename)
+// 	defer file.Close()
+// 	if err != nil {
+// 		return
+// 	}
+// 	_, err = file.Write(data)
+// 	if err != nil {
+// 		return
+// 	}
+// 	log.Printf("%v %v\n\timage received, saved at:%v\n", message.Info.Timestamp, message.Info.RemoteJid, filename)
+// }
 
-func (h *historyHandler) HandleVideoMessage(message whatsapp.VideoMessage) {
-	fmt.Println(message)
-}
+// func (h *historyHandler) HandleDocumentMessage(message whatsapp.DocumentMessage) {
+// 	data, err := message.Download()
+// 	if err != nil {
+// 		if err != whatsapp.ErrMediaDownloadFailedWith410 && err != whatsapp.ErrMediaDownloadFailedWith404 {
+// 			return
+// 		}
+// 		if _, err = h.c.LoadMediaInfo(message.Info.RemoteJid, message.Info.Id, strconv.FormatBool(message.Info.FromMe)); err == nil {
+// 			data, err = message.Download()
+// 			if err != nil {
+// 				return
+// 			}
+// 		}
+// 	}
 
-func (h *historyHandler) HandleAudioMessage(message whatsapp.AudioMessage) {
-	fmt.Println(message)
-}
+// 	filename := fmt.Sprintf("%v/%v.%v", os.TempDir(), message.Info.Id, strings.Split(message.Type, "/")[1])
+// 	file, err := os.Create(filename)
+// 	defer file.Close()
+// 	if err != nil {
+// 		return
+// 	}
+// 	_, err = file.Write(data)
+// 	if err != nil {
+// 		return
+// 	}
+// 	log.Printf("%v %v\n\tdocument received, saved at:%v\n", message.Info.Timestamp, message.Info.RemoteJid, filename)
+// }
+
+// func (h *historyHandler) HandleVideoMessage(message whatsapp.VideoMessage) {
+// 	data, err := message.Download()
+// 	if err != nil {
+// 		if err != whatsapp.ErrMediaDownloadFailedWith410 && err != whatsapp.ErrMediaDownloadFailedWith404 {
+// 			return
+// 		}
+// 		if _, err = h.c.LoadMediaInfo(message.Info.RemoteJid, message.Info.Id, strconv.FormatBool(message.Info.FromMe)); err == nil {
+// 			data, err = message.Download()
+// 			if err != nil {
+// 				return
+// 			}
+// 		}
+// 	}
+
+// 	filename := fmt.Sprintf("%v/%v.%v", os.TempDir(), message.Info.Id, strings.Split(message.Type, "/")[1])
+// 	file, err := os.Create(filename)
+// 	defer file.Close()
+// 	if err != nil {
+// 		return
+// 	}
+// 	_, err = file.Write(data)
+// 	if err != nil {
+// 		return
+// 	}
+// 	log.Printf("%v %v\n\tvideo received, saved at:%v\n", message.Info.Timestamp, message.Info.RemoteJid, filename)
+// }
+
+// func (h *historyHandler) HandleAudioMessage(message whatsapp.AudioMessage) {
+// 	data, err := message.Download()
+// 	if err != nil {
+// 		if err != whatsapp.ErrMediaDownloadFailedWith410 && err != whatsapp.ErrMediaDownloadFailedWith404 {
+// 			return
+// 		}
+// 		if _, err = h.c.LoadMediaInfo(message.Info.RemoteJid, message.Info.Id, strconv.FormatBool(message.Info.FromMe)); err == nil {
+// 			data, err = message.Download()
+// 			if err != nil {
+// 				return
+// 			}
+// 		}
+// 	}
+
+// 	filename := fmt.Sprintf("%v/%v.%v", os.TempDir(), message.Info.Id, strings.Split(message.Type, "/")[1])
+// 	file, err := os.Create(filename)
+// 	defer file.Close()
+// 	if err != nil {
+// 		return
+// 	}
+// 	_, err = file.Write(data)
+// 	if err != nil {
+// 		return
+// 	}
+// 	log.Printf("%v %v\n\taudio received, saved at:%v\n", message.Info.Timestamp, message.Info.RemoteJid, filename)
+// }
 
 func (h *historyHandler) HandleContactMessage(message whatsapp.ContactMessage) {
-	fmt.Println(message)
+	authorID := "-"
+	screenName := "-"
+	if message.Info.FromMe {
+		authorID = h.c.Info.Wid
+		screenName = ""
+	} else {
+		if message.Info.Source.Participant != nil {
+			authorID = *message.Info.Source.Participant
+		} else {
+			authorID = message.Info.RemoteJid
+		}
+		if message.Info.Source.PushName != nil {
+			screenName = *message.Info.Source.PushName
+		}
+	}
+
+	date := time.Unix(int64(message.Info.Timestamp), 0)
+	h.messages = append(h.messages, fmt.Sprintf(
+		"Contact message: %s	%s (%s): Name: %s; Vcard: %s",
+		date, authorID, screenName,
+		message.DisplayName, message.Vcard))
 }
 
 func (h *historyHandler) HandleLocationMessage(message whatsapp.LocationMessage) {
-	fmt.Println(message)
+	authorID := "-"
+	screenName := "-"
+	if message.Info.FromMe {
+		authorID = h.c.Info.Wid
+		screenName = ""
+	} else {
+		if message.Info.Source.Participant != nil {
+			authorID = *message.Info.Source.Participant
+		} else {
+			authorID = message.Info.RemoteJid
+		}
+		if message.Info.Source.PushName != nil {
+			screenName = *message.Info.Source.PushName
+		}
+	}
+
+	date := time.Unix(int64(message.Info.Timestamp), 0)
+	h.messages = append(h.messages, fmt.Sprintf(
+		"Location message: %s	%s (%s): Latitude: %f; Longitude: %f; Name: %s; Addres: %s; Url: %s",
+		date, authorID, screenName,
+		message.DegreesLatitude, message.DegreesLongitude, message.Name, message.Address, message.Url))
 }
 
-func (h *historyHandler) HandleStickerMessage(message whatsapp.StickerMessage) {
-	fmt.Println(message)
-}
+// func (h *historyHandler) HandleStickerMessage(message whatsapp.StickerMessage) {
+// 	data, err := message.Download()
+// 	if err != nil {
+// 		if err != whatsapp.ErrMediaDownloadFailedWith410 && err != whatsapp.ErrMediaDownloadFailedWith404 {
+// 			return
+// 		}
+// 		if _, err = h.c.LoadMediaInfo(message.Info.RemoteJid, message.Info.Id, strconv.FormatBool(message.Info.FromMe)); err == nil {
+// 			data, err = message.Download()
+// 			if err != nil {
+// 				return
+// 			}
+// 		}
+// 	}
+
+// 	filename := fmt.Sprintf("%v/%v.%v", os.TempDir(), message.Info.Id, strings.Split(message.Type, "/")[1])
+// 	file, err := os.Create(filename)
+// 	defer file.Close()
+// 	if err != nil {
+// 		return
+// 	}
+// 	_, err = file.Write(data)
+// 	if err != nil {
+// 		return
+// 	}
+// 	log.Printf("%v %v\n\tsticker received, saved at:%v\n", message.Info.Timestamp, message.Info.RemoteJid, filename)
+// }
 
 func (h *historyHandler) HandleError(err error) {
 	log.Printf("Error occured while retrieving chat history: %s", err)
