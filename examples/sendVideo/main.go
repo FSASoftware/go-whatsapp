@@ -26,7 +26,7 @@ func main() {
 
 	<-time.After(3 * time.Second)
 
-	video, err := os.Open("test.mp4")
+	video, err := os.Open("video.mp4")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error reading video: %v\n", err)
 		os.Exit(1)
@@ -34,7 +34,7 @@ func main() {
 
 	msg := whatsapp.VideoMessage{
 		Info: whatsapp.MessageInfo{
-			RemoteJid: "5511952187414@s.whatsapp.net",
+			RemoteJid: "5511900000000@s.whatsapp.net",
 		},
 		Type:     "video/mp4",
 		Content:  video,
