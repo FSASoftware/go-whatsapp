@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/gob"
 	"fmt"
-	"github.com/Baozisoftware/qrcode-terminal-go"
-	"github.com/Rhymen/go-whatsapp"
 	"os"
 	"time"
+
+	qrcodeTerminal "github.com/Baozisoftware/qrcode-terminal-go"
+	"github.com/Rhymen/go-whatsapp"
 )
 
 func main() {
@@ -24,18 +25,18 @@ func main() {
 		session, err = wac.RestoreWithSession(session)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "restoring failed: %v\n", err)
-			return
+			session, err = regularLogin(wac)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "error during login: %v\n", err)
+				return
+			}
 		}
 	} else {
 		//no saved session -> regular login
-		qr := make(chan string)
-		go func() {
-			terminal := qrcodeTerminal.New()
-			terminal.Get(<-qr).Print()
-		}()
-		session, err = wac.Login(qr)
+		session, err = regularLogin(wac)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error during login: %v\n", err)
+			return
 		}
 	}
 
@@ -47,6 +48,18 @@ func main() {
 
 	fmt.Printf("login successful, session: %v\n", session)
 }
+
+func regularLogin(wac *whatsapp.Conn) (whatsapp.Session, error) {
+	//no saved session -> regular login
+	qr := make(chan string)
+	go func() {
+		terminal := qrcodeTerminal.New()
+		terminal.Get(<-qr).Print()
+	}()
+
+	return wac.Login(qr)
+}
+
 func readSession() (whatsapp.Session, error) {
 	session := whatsapp.Session{}
 	file, err := os.Open(os.TempDir() + "/whatsappSession.gob")
