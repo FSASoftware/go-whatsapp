@@ -103,14 +103,16 @@ func sendMessage(jid string, messageText string, wac *whatsapp.Conn) error {
 
 func closeFunction(wac *whatsapp.Conn) {
 	//Disconnect safe
+	fmt.Println("Loggout now.")
+	wac.Logout()
 	fmt.Println("Shutting down now.")
-	session, err := wac.Disconnect()
+	_, err := wac.Disconnect()
 	if err != nil {
 		log.Fatalf("error disconnecting: %v\n", err)
 	}
-	if err := writeSession(session); err != nil {
-		log.Fatalf("error saving session: %v", err)
-	}
+	// if err := writeSession(session); err != nil {
+	// 	log.Fatalf("error saving session: %v", err)
+	// }
 	return
 }
 
