@@ -233,16 +233,16 @@ func (wac *Conn) keepAlive(minIntervalMs int, maxIntervalMs int) {
 	defer wac.wg.Done()
 
 	for {
-		err := wac.sendKeepAlive()
-		if err != nil {
-			wac.handle(errors.Wrap(err, "keepAlive failed"))
-			//TODO: Consequences?
-		}
 		interval := rand.Intn(maxIntervalMs-minIntervalMs) + minIntervalMs
 		select {
 		case <-time.After(time.Duration(interval) * time.Millisecond):
 		case <-wac.ws.close:
 			return
+		}
+		err := wac.sendKeepAlive()
+		if err != nil {
+			wac.handle(errors.Wrap(err, "keepAlive failed"))
+			//TODO: Consequences?
 		}
 	}
 }
